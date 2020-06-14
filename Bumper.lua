@@ -7,20 +7,19 @@ bumpred = love.graphics.newImage("assets/graphics/bumper_red.png")
 bump_color = {bumpred, bumpyellow, bumpgreen}
 
 --Bumper class will load at start of game from table of x,y coordinates
-Bumper.new = function(x, y, radius, physics, life)
+Bumper.new = function(x, y, radius, physics, index, life)
     --constructor
     local self = self or {}
     self.x = x
     self.y = y
     self.r = radius
-    self.life = life or 3
-    
+    self.life = life or 3 -- removed from function input
+    self.index = index
+
     -- PHYSICS
     self.p = {}
     self.p.world = physics
-    -- Set Callbacks
     
-
     -- body - static object
     self.p.body = love.physics.newBody(self.p.world, self.x, self.y, "static")
     -- shape/bounding box
@@ -29,7 +28,7 @@ Bumper.new = function(x, y, radius, physics, life)
     self.p.fixture = love.physics.newFixture(self.p.body, self.p.shape, 1) --density
     self.p.fixture:setRestitution(0.9)
     self.p.fixture:setFriction(0.3) -- friction
-    self.p.fixture:setUserData(life)
+    self.p.fixture:setUserData(self.index)
     
     --member functions (this draws new instance of circle)
     self.draw = function(self, life)

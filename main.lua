@@ -32,14 +32,14 @@ function love.load()
     -- Bumpers
     local x_bump = {width/10, width*3/10, width*5/10, width*7/10, width*9/10}
     for i, x in ipairs(x_bump) do
-        table.insert(bumpers, Bumper.new(x, (height/5), 20, physics))
-        table.insert(bumpers, Bumper.new(x, (height*3/5), 20, physics))
+        table.insert(bumpers, Bumper.new(x, (height/5), 20, physics, #bumpers + 1)) --#bumbers is index used for callback
+        table.insert(bumpers, Bumper.new(x, (height*3/5), 20, physics, #bumpers + 1))
     end
 
     local x_bump = {0, width/5, width*2/5, width*3/5, width*4/5, width}
     for i, x in ipairs(x_bump) do
-        table.insert(bumpers, Bumper.new(x, (height*2/5), 20, physics))
-        table.insert(bumpers, Bumper.new(x, (height*4/5), 20, physics))
+        table.insert(bumpers, Bumper.new(x, (height*2/5), 20, physics, #bumpers + 1))
+        table.insert(bumpers, Bumper.new(x, (height*4/5), 20, physics, #bumpers + 1))
     end
 end
 
@@ -82,16 +82,25 @@ function love.draw()
 
     -- Bumpers
     for i, bumper in pairs(bumpers) do
-        bumper:draw()
+        life = bumper.life
+        if life > 0 then
+            bumper:draw(life)
+        else
+            table.remove(bumpers, i)
+        end
     end
 end
 
-
---CALLBACKSb
-function beginContact(a, b, coll)
-    -- xx,yy = coll:getNormal()
-    life = a:getUserData()
-    -- print(a:getUserData())
+--CALLBACKS
+function beginContact(bumper, ball, coll) --not sure if bumper and ball are always in this order
+    local index = bumper:getUserData()
+    if bumpers[index] and bumpers[index].life then 
+        life = bumpers[index].life
+        if (life > 0) then
+            bumpers[index].life = life - 1 
+        end
+    end
+    -- print(index, bumpers[index].life)
     -- print(b:getBody())
     -- text = text.."\n"..a:getUserData().." colliding with "..b:getUserData().." with a vector normal of: "..x..", "..y
 end
