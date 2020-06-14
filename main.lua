@@ -1,8 +1,10 @@
 require("CircleShape")
+require("Bumper")
 require("sounds")
 
 -- declare local variables
 local balls = {}
+local bumpers = {}
 local physics = nil
 
 --screen dimensions
@@ -25,13 +27,26 @@ function love.load()
     )
     floor.shape = love.physics.newRectangleShape(width, 1) -- 1px high
     floor.fixture = love.physics.newFixture(floor.body, floor.shape)
+
+    -- Bumpers
+    local x_bump = {width/10, width*3/10, width*5/10, width*7/10, width*9/10}
+    for i, x in ipairs(x_bump) do
+        table.insert(bumpers, Bumper.new(x, (height/5), 20, physics))
+        table.insert(bumpers, Bumper.new(x, (height*3/5), 20, physics))
+    end
+
+    local x_bump = {0, width/5, width*2/5, width*3/5, width*4/5, width}
+    for i, x in ipairs(x_bump) do
+        table.insert(bumpers, Bumper.new(x, (height*2/5), 20, physics))
+        table.insert(bumpers, Bumper.new(x, (height*4/5), 20, physics))
+    end
 end
 
 function love.update(dt)
     -- mouse controls
     function love.mousepressed( x, y, button, istouch, presses )
         -- if button == 1 then
-        if (button == 1) and (y < height/3) then -- for vaginko
+        if (button == 1) and (y < height/5) then -- for vaginko
             table.insert(balls, CircleShape.new(x, y, 50, physics))
             sfx.add_ball()
         end
@@ -62,5 +77,10 @@ function love.draw()
     --draw balls
     for i, ball in pairs(balls) do
         ball:draw()
+    end
+
+    -- Bumpers
+    for i, bumper in pairs(bumpers) do
+        bumper:draw()
     end
 end

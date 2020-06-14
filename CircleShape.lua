@@ -9,7 +9,7 @@ CircleShape.new = function(x, y, radius, physics)
     self.x = x
     self.y = y
     self.r = radius
-    self.p = physics
+    -- self.p = physics
 
     --BALL PHYSICS
     self.physics = {}
@@ -27,11 +27,6 @@ CircleShape.new = function(x, y, radius, physics)
 
     --member functions (this draws new instance of circle)
     self.draw = function()
-        -- love.graphics.circle("fill",
-        --     self.physics.body:getX(), -- will fall at speed of gravity
-        --     self.physics.body:getY(),
-        --     self.r)
-
         love.graphics.draw(ballsack,
             self.physics.body:getX(), -- will fall at speed of gravity
             self.physics.body:getY(),
