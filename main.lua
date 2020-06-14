@@ -13,10 +13,11 @@ height = love.graphics.getHeight()
 
 function love.load()
     -- Play start-up sound:
-    sfx.kawfee()
+    -- sfx.kawfee()
 
     -- Physics Engine
     physics = love.physics.newWorld(0, 9.81*64, true)
+        physics:setCallbacks(beginContact)
 
     local floor = {}
     floor.body = love.physics.newBody(
@@ -83,4 +84,14 @@ function love.draw()
     for i, bumper in pairs(bumpers) do
         bumper:draw()
     end
+end
+
+
+--CALLBACKSb
+function beginContact(a, b, coll)
+    -- xx,yy = coll:getNormal()
+    life = a:getUserData()
+    -- print(a:getUserData())
+    -- print(b:getBody())
+    -- text = text.."\n"..a:getUserData().." colliding with "..b:getUserData().." with a vector normal of: "..x..", "..y
 end

@@ -7,7 +7,7 @@ function love.conf(t)
     t.console = true -- this is already turned on in lua extension settings
 
     t.modules.touch = false --turns off touch module for mobile to save space
-    t.window.fullscreen = true
+    -- t.window.fullscreen = true
 
     t.vsync = true --synchronizes draw rate to monitor refresh rate (default true)
 
